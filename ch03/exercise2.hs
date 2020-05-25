@@ -1,5 +1,8 @@
+import Data.List (sortBy)
+
 tenDigits = [1..10]
 palindrome = tenDigits ++ reverse tenDigits
+nestedList = [[1..5], [6], [7..10]]
 
 -- 1. Write a function that computes the number of elements in a list. To test it, ensure that it gives the same answers as the standard length function.
 myLength::[a]->Int
@@ -23,7 +26,17 @@ isPalindrome [_] = True
 isPalindrome xs = ((head xs) == (last xs)) && isPalindrome (init (tail xs))
 
 -- 6. Create a function that sorts a list of lists based on the length of each sublist. (You may want to look at the sortBy function from the Data.List module.)
+-- Answer from https://github.com/Vincibean/real-world-haskell/blob/develop/ch03/ex08.hs
+sortBySublistLength :: [[a]] -> [[a]]
+sortBySublistLength = sortBy compareByLength
+  where compareByLength a b = compare (length a) (length b)
+
 -- 7. Define a function that joins a list of lists together using a separator value: -- file: ch03/Intersperse.hs intersperse :: a -> [[a]] -> [a]
+-- Answer from https://stackoverflow.com/questions/795317/why-does-this-haskell-code-produce-the-infinite-type-error
+intersperse _ [] = []
+intersperse _ [x] = x
+intersperse s (x:xs) = x ++ [s] ++ intersperse s xs
+
 -- 8. The separator should appear between elements of the list, but it should not follow the last element. Your function should behave as follows: ghci> :load Intersperse [1 of 1] Compiling Main ( Intersperse.hs, interpreted ) Ok, modules loaded: Main. ghci> intersperse ',' [] ""ghci> intersperse ',' ["foo"] "foo"ghci> intersperse ',' ["foo","bar","baz","quux"] "foo,bar,baz,quux"
 -- 9. Using the binary tree type that we defined earlier in this chapter, write a function that will determine the height of the tree. The height is the largest number of hops from the root to an Empty. For example, the tree Empty has height zero; Node "x"Empty Empty has height one; Node "x" Empty (Node "y" Empty Empty) has height two; and so on.
 -- 10. Consider three two-dimensional points, a, b, and c. If we look at the angle formed by the line segment from a to b and the line segment from b to c, it turns left, turns right, or forms a straight line. Define a Direction data type that lets you represent these possibilities.
