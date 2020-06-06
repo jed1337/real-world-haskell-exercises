@@ -86,3 +86,9 @@ takeWhileRecursion predicate (x:xs) = if predicate x
 -- • words
 -- • unlines
 -- For those functions where you can use either foldl' or foldr, which is more appropriate in each case
+
+any' :: Foldable t => (a -> Bool) -> t a -> Bool
+any' f xs = foldr step False xs
+    where step el acc
+        | f el = True
+        | otherwise = acc
